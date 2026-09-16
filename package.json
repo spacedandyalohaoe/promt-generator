@@ -1,0 +1,13 @@
+{
+  "name": "promt-gen",
+  "version": "1.0.0",
+  "description": "AI Prompt Generator for Seedream 5.0 and GPT Image 2.5 powered by NVIDIA NIM",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": ["prompt-generator", "nvidia-nim", "seedream", "gpt-image"],
+  "author": "",
+  "license": "MIT"
+}

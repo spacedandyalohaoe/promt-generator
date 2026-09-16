@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Studio</title>
+  <meta name="description" content="Инженерный генератор кинематографичных и точных промтов">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background glow -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <div class="app-container">
+    <!-- Header: Clean with only the title -->
+    <header class="header">
+      <div class="logo-area">
+        <h1 class="logo-title">Prompt Studio</h1>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="main-grid">
+      <!-- Left Configuration & Input Column -->
+      <section class="config-panel">
+        
+        <!-- Step 1: Target Image Model Selection -->
+        <div class="card step-card">
+          <div class="card-header">
+            <span class="step-num">1</span>
+            <div class="card-title-group">
+              <h2 class="card-title">Целевая модель</h2>
+              <p class="card-desc">К какой модели применять базу знаний</p>
+            </div>
+          </div>
+          <div class="model-select-grid" id="targetModelGrid">
+            <!-- Seedream 5.0 Option -->
+            <label class="model-option active" data-model="seedream-5.0">
+              <input type="radio" name="targetModel" value="seedream-5.0" checked>
+              <div class="model-option-content">
+                <div class="model-option-top">
+                  <span class="model-icon">🎨</span>
+                  <span class="model-name">Seedream 5.0 Pro</span>
+                  <span class="pill pill-cyan">ByteDance</span>
+                </div>
+                <p class="model-info">Кинематографичный свет, сложная оптика, 14 языков, мульти-реф до 10 фото</p>
+              </div>
+            </label>
+
+            <!-- GPT Image 2.5 Option -->
+            <label class="model-option" data-model="gpt-image-2.5">
+              <input type="radio" name="targetModel" value="gpt-image-2.5">
+              <div class="model-option-content">
+                <div class="model-option-top">
+                  <span class="model-icon">⚡</span>
+                  <span class="model-name">GPT Image 2.5</span>
+                  <span class="pill pill-purple">OpenAI</span>
+                </div>
+                <p class="model-info">Flare & Sunburst, модульные блоки, честный альфа-канал, типографика</p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Step 2: Engine Selector -->
+        <div class="card step-card">
+          <div class="card-header">
+            <span class="step-num">2</span>
+            <div class="card-title-group">
+              <h2 class="card-title">ИИ-генератор</h2>
+              <p class="card-desc">Модель, формирующая промт по базе</p>
+            </div>
+          </div>
+          <div class="select-wrapper">
+            <select id="nvidiaModelSelect" class="custom-select">
+              <!-- Populated dynamically via app.js -->
+            </select>
+          </div>
+          <p class="helper-text" id="nvidiaModelDesc">
+            ⚡ Загрузка описания модели...
+          </p>
+        </div>
+
+        <!-- Step 3: Prompt Input -->
+        <div class="card step-card input-card">
+          <div class="card-header">
+            <span class="step-num">3</span>
+            <div class="card-title-group">
+              <h2 class="card-title">Ваша идея</h2>
+              <p class="card-desc">Опишите своими словами (на русском или английском)</p>
+            </div>
+          </div>
+
+          <div class="textarea-container">
+            <textarea id="userPromptInput" rows="6" placeholder="Опишите, что вы хотите получить (например: Лист персонажа в 4 позах: front, left, right, back на темном фоне, сохраняя стиль исходной картинки)..." spellcheck="false"></textarea>
+            <div class="textarea-footer">
+              <span class="kbd-hint"><kbd>Cmd</kbd> + <kbd>Enter</kbd> для запуска</span>
+              <span class="char-counter" id="charCounter">0 символов</span>
+            </div>
+          </div>
+
+          <button type="button" class="btn-primary" id="btnGenerate">
+            <span class="btn-spinner" id="btnSpinner"></span>
+            <span class="btn-text" id="btnText">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
+              </svg>
+              Сгенерировать промт по базе
+            </span>
+          </button>
+        </div>
+
+      </section>
+
+      <!-- Right Result Column -->
+      <section class="output-panel">
+        <div class="card result-card" id="resultCard">
+          <div class="result-header">
+            <div class="result-meta">
+              <div class="status-indicator ready" id="resultStatus"></div>
+              <h3 class="result-title" id="resultTitle">Результат генерации</h3>
+            </div>
+            <div class="result-actions" id="resultActions" style="display: none;">
+              <button type="button" class="btn-action" id="btnCopyPrompt" title="Скопировать только промт">
+                <svg id="copyPromptIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span id="copyPromptText">Копировать промт</span>
+              </button>
+              <button type="button" class="btn-action btn-action-subtle" id="btnCopyAll" title="Скопировать всё вместе">
+                <span>Скопировать всё</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Empty placeholder state -->
+          <div class="empty-state" id="emptyState">
+            <div class="empty-icon">✨</div>
+            <h4>Готов к созданию промта</h4>
+            <p>Выберите модель, введите идею и нажмите кнопку. ИИ переведет задумку в точный кинематографичный промт на английском языке по правилам базы.</p>
+          </div>
+
+          <!-- Loading state -->
+          <div class="loading-state" id="loadingState" style="display: none;">
+            <div class="pulsing-loader"></div>
+            <p class="loading-label" id="loadingLabel">Формируем промт по базе знаний...</p>
+            <p class="loading-sublabel">Анализируем композицию, физику света и запреты</p>
+          </div>
+
+          <!-- Formatted Result Content Container -->
+          <div class="result-content" id="resultContent" style="display: none;">
+            <!-- Rendered markdown result here -->
+          </div>
+
+          <!-- Error container -->
+          <div class="error-container" id="errorContainer" style="display: none;">
+            <div class="error-icon">⚠️</div>
+            <div class="error-text-wrap">
+              <h4 id="errorTitle">Ошибка при обращении к модели</h4>
+              <p id="errorDesc"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Собрано для друзей • Базы знаний: Seedream 5.0 Pro & GPT Image 2.5</p>
+    </footer>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">Скопировано в буфер!</div>
+
+  <script src="app.js"></script>
+</body>
+</html>

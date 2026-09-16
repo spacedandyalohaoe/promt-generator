@@ -1,0 +1,11 @@
+# Secrets & Environment variables
+.env
+.env*
+.env.local
+.env.*.local
+!.env.example
+
+# Node & OS
+node_modules/
+.DS_Store
+.vercel
