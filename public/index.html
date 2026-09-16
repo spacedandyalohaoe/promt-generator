@@ -77,11 +77,14 @@
           </div>
           <div class="select-wrapper">
             <select id="nvidiaModelSelect" class="custom-select">
-              <!-- Populated dynamically via app.js -->
+              <option value="meta/llama-3.2-11b-vision-instruct" selected>Llama 3.2 11B Vision Instruct [Быстрый • Рекомендуется]</option>
+              <option value="z-ai/glm-5.3-flash">GLM 5.3 Flash [Быстрый • Анализ]</option>
+              <option value="meta/llama-3.2-90b-vision-instruct">Llama 3.2 90B Vision Instruct [90B Флагман (Очередь)]</option>
+              <option value="deepseek-ai/deepseek-v4-flash-0731">DeepSeek V4 Flash [Reasoning (Очередь)]</option>
             </select>
           </div>
           <p class="helper-text" id="nvidiaModelDesc">
-            ⚡ Загрузка описания модели...
+            💡 Мгновенный отклик (~1-2 сек): стабильно генерирует промты по строгим правилам и оптике без задержек
           </p>
         </div>
 

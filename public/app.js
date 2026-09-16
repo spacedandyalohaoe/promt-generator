@@ -24,9 +24,36 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCopyAll = document.getElementById('btnCopyAll');
   const toast = document.getElementById('toast');
 
+  const DEFAULT_NVIDIA_MODELS = [
+    {
+      id: 'meta/llama-3.2-11b-vision-instruct',
+      name: 'Llama 3.2 11B Vision Instruct',
+      badge: 'Быстрый • Рекомендуется',
+      desc: 'Мгновенный отклик (~1-2 сек): стабильно генерирует промты по строгим правилам и оптике без задержек'
+    },
+    {
+      id: 'z-ai/glm-5.3-flash',
+      name: 'GLM 5.3 Flash',
+      badge: 'Быстрый • Анализ',
+      desc: 'Высокоскоростная модель для сложных сцен, композиций и мульти-референсов'
+    },
+    {
+      id: 'meta/llama-3.2-90b-vision-instruct',
+      name: 'Llama 3.2 90B Vision Instruct',
+      badge: '90B Флагман (Очередь)',
+      desc: 'Крупная 90B модель (на бесплатном тарифе NVIDIA возможен таймаут из-за очередей)'
+    },
+    {
+      id: 'deepseek-ai/deepseek-v4-flash-0731',
+      name: 'DeepSeek V4 Flash',
+      badge: 'Reasoning (Очередь)',
+      desc: 'Продвинутый логический анализ (на бесплатном тарифе NVIDIA возможен таймаут из-за очередей)'
+    }
+  ];
+
   let currentRawResponse = '';
   let currentExtractedPrompt = '';
-  let availableNvidiaModels = [];
+  let availableNvidiaModels = [...DEFAULT_NVIDIA_MODELS];
 
   // 1. Load Models from Server
   async function loadModels() {
@@ -34,21 +61,29 @@ document.addEventListener('DOMContentLoaded', () => {
       const res = await fetch('/api/models');
       if (res.ok) {
         const data = await res.json();
-        availableNvidiaModels = data.nvidiaModels || [];
-        
-        nvidiaModelSelect.innerHTML = '';
-        availableNvidiaModels.forEach((m, idx) => {
-          const opt = document.createElement('option');
-          opt.value = m.id;
-          opt.textContent = `${m.name} [${m.badge}]`;
-          if (idx === 0) opt.selected = true;
-          nvidiaModelSelect.appendChild(opt);
-        });
+        if (Array.isArray(data.nvidiaModels) && data.nvidiaModels.length > 0) {
+          const currentlySelected = nvidiaModelSelect.value;
+          availableNvidiaModels = data.nvidiaModels;
+          
+          nvidiaModelSelect.innerHTML = '';
+          availableNvidiaModels.forEach((m) => {
+            const opt = document.createElement('option');
+            opt.value = m.id;
+            opt.textContent = `${m.name} [${m.badge}]`;
+            if (m.id === currentlySelected) {
+              opt.selected = true;
+            }
+            nvidiaModelSelect.appendChild(opt);
+          });
 
-        updateNvidiaModelDesc();
+          if (!nvidiaModelSelect.value && availableNvidiaModels[0]) {
+            nvidiaModelSelect.value = availableNvidiaModels[0].id;
+          }
+          updateNvidiaModelDesc();
+        }
       }
     } catch (e) {
-      console.warn('Could not load models from server:', e);
+      console.warn('Could not load models from server (using local defaults):', e);
     }
   }
 
@@ -61,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   nvidiaModelSelect.addEventListener('change', updateNvidiaModelDesc);
+  updateNvidiaModelDesc();
 
   // 2. Target Model Selection
   targetModelOptions.forEach(opt => {

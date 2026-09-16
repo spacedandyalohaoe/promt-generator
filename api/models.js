@@ -50,15 +50,24 @@ export default function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') {
+    if (typeof res.status === 'function') {
+      return res.status(204).end();
+    }
     res.statusCode = 204;
     return res.end();
   }
 
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'application/json');
-  res.end(JSON.stringify({
+  const responseData = {
     targetModels: TARGET_MODELS,
     nvidiaModels: NVIDIA_MODELS,
     hasServerKey: !!process.env.NVIDIA_API_KEY
-  }));
+  };
+
+  if (typeof res.status === 'function' && typeof res.json === 'function') {
+    return res.status(200).json(responseData);
+  }
+
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'application/json');
+  return res.end(JSON.stringify(responseData));
 }
