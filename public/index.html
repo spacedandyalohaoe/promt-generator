@@ -34,7 +34,6 @@
             <span class="step-num">1</span>
             <div class="card-title-group">
               <h2 class="card-title">Целевая модель</h2>
-              <p class="card-desc">К какой модели применять базу знаний</p>
             </div>
           </div>
           <div class="model-select-grid" id="targetModelGrid">
@@ -47,7 +46,6 @@
                   <span class="model-name">Seedream 5.0 Pro</span>
                   <span class="pill pill-cyan">ByteDance</span>
                 </div>
-                <p class="model-info">Кинематографичный свет, сложная оптика, 14 языков, мульти-реф до 10 фото</p>
               </div>
             </label>
 
@@ -60,7 +58,6 @@
                   <span class="model-name">GPT Image 2.5</span>
                   <span class="pill pill-purple">OpenAI</span>
                 </div>
-                <p class="model-info">Flare & Sunburst, модульные блоки, честный альфа-канал, типографика</p>
               </div>
             </label>
           </div>
@@ -72,20 +69,16 @@
             <span class="step-num">2</span>
             <div class="card-title-group">
               <h2 class="card-title">ИИ-генератор</h2>
-              <p class="card-desc">Модель, формирующая промт по базе</p>
             </div>
           </div>
           <div class="select-wrapper">
             <select id="nvidiaModelSelect" class="custom-select">
-              <option value="meta/llama-3.2-11b-vision-instruct" selected>Llama 3.2 11B Vision Instruct [Быстрый • Рекомендуется]</option>
-              <option value="z-ai/glm-5.3-flash">GLM 5.3 Flash [Быстрый • Анализ]</option>
-              <option value="meta/llama-3.2-90b-vision-instruct">Llama 3.2 90B Vision Instruct [90B Флагман (Очередь)]</option>
-              <option value="deepseek-ai/deepseek-v4-flash-0731">DeepSeek V4 Flash [Reasoning (Очередь)]</option>
+              <option value="meta/llama-3.2-11b-vision-instruct" selected>Llama 3.2 11B (Быстрый)</option>
+              <option value="z-ai/glm-5.3-flash">GLM 5.3 Flash (Быстрый)</option>
+              <option value="meta/llama-3.2-90b-vision-instruct">Llama 3.2 90B (Очередь)</option>
+              <option value="deepseek-ai/deepseek-v4-flash-0731">DeepSeek V4 Flash (Очередь)</option>
             </select>
           </div>
-          <p class="helper-text" id="nvidiaModelDesc">
-            💡 Мгновенный отклик (~1-2 сек): стабильно генерирует промты по строгим правилам и оптике без задержек
-          </p>
         </div>
 
         <!-- Step 3: Prompt Input -->
@@ -94,7 +87,6 @@
             <span class="step-num">3</span>
             <div class="card-title-group">
               <h2 class="card-title">Ваша идея</h2>
-              <p class="card-desc">Опишите своими словами (на русском или английском)</p>
             </div>
           </div>
 
@@ -145,14 +137,13 @@
           <div class="empty-state" id="emptyState">
             <div class="empty-icon">✨</div>
             <h4>Готов к созданию промта</h4>
-            <p>Выберите модель, введите идею и нажмите кнопку. ИИ переведет задумку в точный кинематографичный промт на английском языке по правилам базы.</p>
+            <p>Выберите модель, введите идею и нажмите кнопку.</p>
           </div>
 
           <!-- Loading state -->
           <div class="loading-state" id="loadingState" style="display: none;">
             <div class="pulsing-loader"></div>
-            <p class="loading-label" id="loadingLabel">Формируем промт по базе знаний...</p>
-            <p class="loading-sublabel">Анализируем композицию, физику света и запреты</p>
+            <p class="loading-label" id="loadingLabel">Формируем промт...</p>
           </div>
 
           <!-- Formatted Result Content Container -->
@@ -174,7 +165,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-      <p>Собрано для друзей • Базы знаний: Seedream 5.0 Pro & GPT Image 2.5</p>
+      <p>cyci2150</p>
     </footer>
   </div>
 

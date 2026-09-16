@@ -278,9 +278,9 @@ body {
 /* Step Header */
 .card-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .step-num {
@@ -305,8 +305,7 @@ body {
 }
 
 .card-desc {
-  font-size: 0.82rem;
-  color: var(--text-muted);
+  display: none;
 }
 
 /* Step 1: Model Selector Grid */
@@ -322,10 +321,11 @@ body {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   background: var(--bg-input);
-  padding: 14px;
+  padding: 14px 16px;
   transition: var(--transition-normal);
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .model-option input[type="radio"] {
@@ -350,7 +350,7 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 0;
 }
 
 .model-icon {

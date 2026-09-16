@@ -88,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateNvidiaModelDesc() {
+    if (!nvidiaModelDesc) return;
     const selectedId = nvidiaModelSelect.value;
     const model = availableNvidiaModels.find(m => m.id === selectedId);
     if (model) {
